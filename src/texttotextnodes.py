@@ -7,8 +7,12 @@ def text_to_textnodes(text):
     nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
     nodes = split_nodes_image(nodes)
     nodes = split_nodes_link(nodes)
-    for node in nodes:
-        print(node)
+    return nodes
 
 if __name__ == "__main__":
-    text_to_textnodes("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
+    nodes = text_to_textnodes("This is _text_ with an **bold** word and some `code` and a [link](https://boot.dev) and a ![image](https://image.png)")
+    print("\n")
+    print("#####################################################")
+    print("This is _text_ with an **bold** word and some `code` and a [link](https://boot.dev) and a ![image](https://image.png)")
+    for node in nodes:
+        print(node)

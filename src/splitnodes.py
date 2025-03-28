@@ -12,38 +12,36 @@ def extract_markdown_links(text):
     return (alt_text_matches[0], url_matches[0])
 
 def split_nodes_image(nodes):
-    node_values = []
-    for node in nodes:
-        node_values = re.split(r"(!.*?\))", node.text)
-    
     new_nodes = []
-    for value in node_values:
-        if len(value) == 0:
-            continue
-
-        if "!" in value:
-            data = extract_markdown_images(value)
-            new_nodes.append(TextNode(data[0], TextType.IMAGE, data[1]))
+    for node in nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
         else:
-            new_nodes.append(TextNode(value, TextType.TEXT))
-
+            node_values = re.split(r"(!.*?\))", node.text)
+            for value in node_values:
+                if "!" in value:
+                    data = extract_markdown_images(value)
+                    new_nodes.append(TextNode(data[0], TextType.IMAGE, data[1]))
+                else:
+                    if len(value) > 0:
+                        new_nodes.append(TextNode(value, TextType.TEXT))
     return new_nodes
 
 def split_nodes_link(nodes):
-    node_values = []
-    for node in nodes:
-        node_values = re.split(r"(\[.*?\))", node.text)
     new_nodes = []
-    for value in node_values:
-        if len(value) == 0:
-            continue
-
-        if "[" in value:
-            data = extract_markdown_links(value)
-            new_nodes.append(TextNode(data[0], TextType.LINK, data[1]))
+    for node in nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
         else:
-            new_nodes.append(TextNode(value, TextType.TEXT))
-            
+            node_values = re.split(r"((?<!!)\[.*?\))", node.text)
+
+            for value in node_values:
+                if "[" in value:
+                    data = extract_markdown_links(value)
+                    new_nodes.append(TextNode(data[0], TextType.LINK, data[1]))
+                else:
+                    if len(value) > 0:
+                        new_nodes.append(TextNode(value, TextType.TEXT))
     return new_nodes
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):

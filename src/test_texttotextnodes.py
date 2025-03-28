@@ -20,6 +20,23 @@ class TestTextToTextNodes(unittest.TestCase):
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ], nodes)
 
+    def test_eq_rev(self):
+        print("Testing Reverse")
+        nodes1 = text_to_textnodes(
+            "This is _text_ with an **bold** word and some `code` and a [link](https://boot.dev) and a ![image](https://image.png)")
+        self.assertEqual([
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.ITALIC),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("bold", TextType.BOLD),
+            TextNode(" word and some ", TextType.TEXT),
+            TextNode("code", TextType.CODE),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("image", TextType.IMAGE, "https://image.png"),
+        ], nodes1)
+
 
 if __name__ == "__main__":
     unittest.main
