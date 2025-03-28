@@ -1,4 +1,50 @@
 from textnode import TextNode, TextType
+import re
+
+def extract_markdown_images(text):
+    alt_matches = re.findall(r"!\[(.*?)\]", text)
+    src_matches = re.findall(r"\((.*?)\)", text)
+    return (alt_matches[0], src_matches[0])
+
+def extract_markdown_links(text):
+    alt_text_matches = re.findall(r"\[(.*?)\]", text)
+    url_matches = re.findall(r"\((.*?)\)", text)
+    return (alt_text_matches[0], url_matches[0])
+
+def split_nodes_image(nodes):
+    node_values = []
+    for node in nodes:
+        node_values = re.split(r"(!.*?\))", node.text)
+    
+    new_nodes = []
+    for value in node_values:
+        if len(value) == 0:
+            continue
+
+        if "!" in value:
+            data = extract_markdown_images(value)
+            new_nodes.append(TextNode(data[0], TextType.IMAGE, data[1]))
+        else:
+            new_nodes.append(TextNode(value, TextType.TEXT))
+
+    return new_nodes
+
+def split_nodes_link(nodes):
+    node_values = []
+    for node in nodes:
+        node_values = re.split(r"(\[.*?\))", node.text)
+    new_nodes = []
+    for value in node_values:
+        if len(value) == 0:
+            continue
+
+        if "[" in value:
+            data = extract_markdown_links(value)
+            new_nodes.append(TextNode(data[0], TextType.LINK, data[1]))
+        else:
+            new_nodes.append(TextNode(value, TextType.TEXT))
+            
+    return new_nodes
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     old_nodes_copy = old_nodes.copy()
@@ -35,7 +81,4 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 if __name__ == "__main__":
-    nodes = split_nodes_delimiter([TextNode("This has a **bold** word, and another **bold** word", TextType.TEXT)], "**", TextType.BOLD)
-
-    for node in nodes:
-        print(node)
+    ...
