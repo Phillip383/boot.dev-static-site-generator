@@ -4,11 +4,14 @@ from splitnodes import *
 from parentnode import *
 from texttotextnodes import *
 from leafnode import *
+from textnode import *
 
 def markdown_to_html_node(markdown) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
     children = []
     for block in blocks:
+        if len(block) == 0:
+            continue
         try:
             node = create_node(block)
             children.append(node)
@@ -17,13 +20,19 @@ def markdown_to_html_node(markdown) -> ParentNode:
     return ParentNode(tag="div", children=children)
 
 def create_code_html_node(block) -> HTMLNode:
-    print(block)
     block = block.strip("```").lstrip("\n")
     text_node = TextNode(text=block, text_type=TextType.CODE)
     return ParentNode(tag="pre", children=[LeafNode(tag="code", value=text_node.text)])
 
 def create_paragraph_html_node(block) -> HTMLNode:
-    ...
+    block = block.replace("\n", " ")
+    children_text_nodes = text_to_textnodes(block)
+    children = []
+    for node in children_text_nodes:
+        child = TextNode.text_node_to_html_node(node)
+        if len(child.value) > 0:
+            children.append(child)
+    return ParentNode(tag="p", children=children)
 
 def create_ordered_list_html_node(block) -> HTMLNode:
     ...
@@ -32,7 +41,8 @@ def create_unordered_list_html_node(block) -> HTMLNode:
     ...
 
 def create_heading_html_node(block) -> HTMLNode:
-    ...
+    #use this as like h{heading_count} in the tag
+    heading_count = block.count("#")
 
 def create_quote_html_node(block) -> HTMLNode:
     ...
@@ -57,16 +67,15 @@ def create_node(block: str):
          
 
 #should return a list of html nodes.
-#if the block type is we don't need to format
-#the text as if it's a paragraph.
 def text_to_children(text):
     ...
 
 if __name__ == "__main__":
     print(markdown_to_html_node("""
-    ```
-    This is text that _should_ remain
-    the **same** even with inline stuff
-    ```
+    This is **bolded** paragraph
+    text in a p
+    tag here
+
+    This is another paragraph with _italic_ text and `code` here
     """
     ).to_html())

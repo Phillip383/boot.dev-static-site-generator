@@ -4,7 +4,7 @@ from htmlnode import *
 
 
 class TestMarkdownToHTML(unittest.TestCase):
-    @unittest.skip("")
+
     def test_paragraphs(self):
         md = """
         This is **bolded** paragraph
