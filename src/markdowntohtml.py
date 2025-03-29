@@ -30,8 +30,7 @@ def create_paragraph_html_node(block) -> HTMLNode:
     children = []
     for node in children_text_nodes:
         child = TextNode.text_node_to_html_node(node)
-        if len(child.value) > 0:
-            children.append(child)
+        children.append(child)
     return ParentNode(tag="p", children=children)
 
 def create_ordered_list_html_node(block) -> HTMLNode:
@@ -42,7 +41,9 @@ def create_unordered_list_html_node(block) -> HTMLNode:
 
 def create_heading_html_node(block) -> HTMLNode:
     #use this as like h{heading_count} in the tag
+    #probably need to do this on a child of the block.
     heading_count = block.count("#")
+    return HTMLNode()
 
 def create_quote_html_node(block) -> HTMLNode:
     ...
@@ -64,7 +65,6 @@ def create_node(block: str):
             return create_heading_html_node(block)
         case _:
             raise Exception("Block Type couldn't be determined")
-         
 
 #should return a list of html nodes.
 def text_to_children(text):
