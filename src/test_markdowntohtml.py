@@ -2,8 +2,9 @@ import unittest
 from markdowntohtml import *
 from htmlnode import *
 
-@unittest.skip("")
+
 class TestMarkdownToHTML(unittest.TestCase):
+    @unittest.skip("")
     def test_paragraphs(self):
         md = """
         This is **bolded** paragraph
