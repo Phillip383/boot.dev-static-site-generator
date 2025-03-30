@@ -40,7 +40,13 @@ def create_ordered_list_html_node(block) -> HTMLNode:
     return ParentNode(tag="ol", children=children)
 
 def create_unordered_list_html_node(block) -> HTMLNode:
-    ...
+    blocks = block.split("\n")
+
+    children = []
+    for b in blocks:
+        t = b[b.find(" "):].strip()
+        children.append(ParentNode(tag="li", children=text_to_children(t)))
+    return ParentNode(tag="ul", children=children)
 
 def create_heading_html_node(block) -> HTMLNode:
     #use this as like h{heading_count} in the tag

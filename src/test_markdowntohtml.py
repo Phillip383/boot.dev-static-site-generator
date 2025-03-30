@@ -50,17 +50,16 @@ class TestMarkdownToHTML(unittest.TestCase):
         "<div><blockquote>\nThis is a quote block that has <i>italic</i> word and a <b>bold</b> word\n</blockquote></div>"
         )
 
-    @unittest.skip("")
     def test_unordered_list(self):
         md = """
         - one
         - two
         - three
         """
-        node = markdown_to_html_node(node)
+        node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html,""
-        "<ul><li>one</li><li>two</li><li>three</li></ul>"
+        "<div><ul><li>one</li><li>two</li><li>three</li></ul></div>"
         )
 
     def test_ordered_list(self):
