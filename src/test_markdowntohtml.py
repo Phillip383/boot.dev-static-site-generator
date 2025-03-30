@@ -74,6 +74,19 @@ class TestMarkdownToHTML(unittest.TestCase):
         self.assertEqual(html, ""
         "<div><ol><li>one</li><li>two</li><li>three</li></ol></div>"
         )
+
+        md2 = """
+        1. this **item** has some bold.
+        2. this _item_ has some italic.
+        3. this `item` has some code.
+        """
+        node = markdown_to_html_node(md2)
+        html = node.to_html()
+        self.assertEqual(html, ""
+        "<div><ol><li>this <b>item</b> has some bold.</li><li>this <i>item</i> has some italic.</li><li>this <code>item</code> has some code.</li></ol></div>"
+        )
+
+
     @unittest.skip("")
     def test_headings(self):
         md = """

@@ -36,9 +36,7 @@ def create_ordered_list_html_node(block) -> HTMLNode:
     children = []
     for b in blocks:
         t = b[b.find(" "):].strip()
-        children.extend(text_to_children(t))
-    for child in children:
-        child.tag = "li"
+        children.append(ParentNode(tag="li", children=text_to_children(t)))
     return ParentNode(tag="ol", children=children)
 
 def create_unordered_list_html_node(block) -> HTMLNode:
