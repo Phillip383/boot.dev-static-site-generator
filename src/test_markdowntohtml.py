@@ -63,7 +63,6 @@ class TestMarkdownToHTML(unittest.TestCase):
         "<ul><li>one</li><li>two</li><li>three</li></ul>"
         )
 
-    @unittest.skip("")
     def test_ordered_list(self):
         md = """
         1. one
@@ -73,7 +72,7 @@ class TestMarkdownToHTML(unittest.TestCase):
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html, ""
-        "<ol><li>one</li><li>two</li><li>three</li></ol>"
+        "<div><ol><li>one</li><li>two</li><li>three</li></ol></div>"
         )
     @unittest.skip("")
     def test_headings(self):

@@ -5,6 +5,7 @@ from parentnode import *
 from texttotextnodes import *
 from leafnode import *
 from textnode import *
+import re
 
 def markdown_to_html_node(markdown) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
@@ -30,9 +31,14 @@ def create_paragraph_html_node(block) -> HTMLNode:
     return ParentNode(tag="p", children=children)
 
 def create_ordered_list_html_node(block) -> HTMLNode:
-    children = text_to_children(block)
+    blocks = block.split("\n")
+
+    children = []
+    for b in blocks:
+        t = b[b.find(" "):].strip()
+        children.extend(text_to_children(t))
     for child in children:
-        ...
+        child.tag = "li"
     return ParentNode(tag="ol", children=children)
 
 def create_unordered_list_html_node(block) -> HTMLNode:
@@ -75,10 +81,8 @@ def text_to_children(text):
 
 if __name__ == "__main__":
     print(markdown_to_html_node("""
-    This is **bolded** paragraph
-    text in a p
-    tag here
-
-    This is another paragraph with _italic_ text and `code` here
+    1. one
+    2. two
+    3. three
     """
     ).to_html())
