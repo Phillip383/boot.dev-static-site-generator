@@ -37,7 +37,6 @@ class TestMarkdownToHTML(unittest.TestCase):
         "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
     )
     
-    @unittest.skip("")
     def test_quoteblock(self):
         md = """
         > This is a quote block
@@ -47,7 +46,7 @@ class TestMarkdownToHTML(unittest.TestCase):
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html,
-        "<div><blockquote>\nThis is a quote block that has <i>italic</i> word and a <b>bold</b> word\n</blockquote></div>"
+        "<div><blockquote>This is a quote block that has <i>italic</i> word and a <b>bold</b> word</blockquote></div>"
         )
 
     def test_unordered_list(self):

@@ -49,15 +49,15 @@ def create_unordered_list_html_node(block) -> HTMLNode:
     return ParentNode(tag="ul", children=children)
 
 def create_heading_html_node(block) -> HTMLNode:
-    #use this as like h{heading_count} in the tag
-    #probably need to do this on a child of the block.
     heading_count = block.count("#")
     return LeafNode(tag=f"h{heading_count}", value=block.strip("# "))
 
 def create_quote_html_node(block) -> HTMLNode:
+    block = block.replace(">", "")
+    block = block.replace("\n", "")
     children = []
-
-    return ParentNode(tag="quoteblock", children=children)
+    children.extend(text_to_children(block.strip()))
+    return ParentNode(tag="blockquote", children=children)
 
 def create_node(block: str):
     tp = block_to_block_type(block)
@@ -77,7 +77,6 @@ def create_node(block: str):
         case _:
             raise Exception("Block Type couldn't be determined")
 
-#should return a list of html nodes.
 def text_to_children(text):
     children_text_nodes = text_to_textnodes(text)
     children = []
@@ -87,17 +86,8 @@ def text_to_children(text):
 
 if __name__ == "__main__":
     print(markdown_to_html_node("""
-    # Heading 1
-
-    ## Heading 2
-
-    ### Heading 3
-
-    #### Heading 4
-
-    ##### Heading 5
-
-    ###### Heading 6
-        
+    > This is a quote block
+    > that has _italic_ word
+    > and a **bold** word    
     """
     ).to_html())
