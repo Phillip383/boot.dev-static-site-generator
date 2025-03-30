@@ -26,15 +26,14 @@ def create_code_html_node(block) -> HTMLNode:
 
 def create_paragraph_html_node(block) -> HTMLNode:
     block = block.replace("\n", " ")
-    children_text_nodes = text_to_textnodes(block)
-    children = []
-    for node in children_text_nodes:
-        child = TextNode.text_node_to_html_node(node)
-        children.append(child)
+    children = text_to_children(block)
     return ParentNode(tag="p", children=children)
 
 def create_ordered_list_html_node(block) -> HTMLNode:
-    ...
+    children = text_to_children(block)
+    for child in children:
+        ...
+    return ParentNode(tag="ol", children=children)
 
 def create_unordered_list_html_node(block) -> HTMLNode:
     ...
@@ -68,7 +67,11 @@ def create_node(block: str):
 
 #should return a list of html nodes.
 def text_to_children(text):
-    ...
+    children_text_nodes = text_to_textnodes(text)
+    children = []
+    for node in children_text_nodes:
+        children.append(TextNode.text_node_to_html_node(node))
+    return children
 
 if __name__ == "__main__":
     print(markdown_to_html_node("""

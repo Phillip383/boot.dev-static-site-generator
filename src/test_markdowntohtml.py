@@ -36,6 +36,60 @@ class TestMarkdownToHTML(unittest.TestCase):
         html,
         "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
     )
+    
+    @unittest.skip("")
+    def test_quoteblock(self):
+        md = """
+        > This is a quote block
+        > that has _italic_ word
+        > and a **bold** word
+        """
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html,
+        "<div><blockquote>\nThis is a quote block that has <i>italic</i> word and a <b>bold</b> word\n</blockquote></div>"
+        )
+
+    @unittest.skip("")
+    def test_unordered_list(self):
+        md = """
+        - one
+        - two
+        - three
+        """
+        node = markdown_to_html_node(node)
+        html = node.to_html()
+        self.assertEqual(html,""
+        "<ul><li>one</li><li>two</li><li>three</li></ul>"
+        )
+
+    @unittest.skip("")
+    def test_ordered_list(self):
+        md = """
+        1. one
+        2. two
+        3. three
+        """
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, ""
+        "<ol><li>one</li><li>two</li><li>three</li></ol>"
+        )
+    @unittest.skip("")
+    def test_headings(self):
+        md = """
+        # Heading 1
+        ## Heading 2
+        ### Heading 3
+        #### Heading 4
+        ##### Heading 5
+        ###### Heading 6
+        """
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html,
+        "<div><h1>Heading 1</h1>\n<h2>Heading 2</h2>\n<h3>Heading 3</h3>\n<h4>Heading 4</h4>\n<h5>Heading 5</h5>\n<h6>Heading 6</h6>\n</div>"
+        )
 
 if __name__ == "__main__":
     unittest.main
