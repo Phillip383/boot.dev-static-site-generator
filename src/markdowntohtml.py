@@ -52,10 +52,12 @@ def create_heading_html_node(block) -> HTMLNode:
     #use this as like h{heading_count} in the tag
     #probably need to do this on a child of the block.
     heading_count = block.count("#")
-    return HTMLNode()
+    return LeafNode(tag=f"h{heading_count}", value=block.strip("# "))
 
 def create_quote_html_node(block) -> HTMLNode:
-    ...
+    children = []
+
+    return ParentNode(tag="quoteblock", children=children)
 
 def create_node(block: str):
     tp = block_to_block_type(block)
@@ -85,8 +87,17 @@ def text_to_children(text):
 
 if __name__ == "__main__":
     print(markdown_to_html_node("""
-    1. one
-    2. two
-    3. three
+    # Heading 1
+
+    ## Heading 2
+
+    ### Heading 3
+
+    #### Heading 4
+
+    ##### Heading 5
+
+    ###### Heading 6
+        
     """
     ).to_html())
