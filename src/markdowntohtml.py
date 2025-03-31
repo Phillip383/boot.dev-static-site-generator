@@ -5,7 +5,7 @@ from parentnode import *
 from texttotextnodes import *
 from leafnode import *
 from textnode import *
-import re
+
 
 def markdown_to_html_node(markdown) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
@@ -84,10 +84,8 @@ def text_to_children(text):
         children.append(TextNode.text_node_to_html_node(node))
     return children
 
+def extract_title(md):
+    return md[md.find("# "):md.find("\n")].strip("#\n ")
+
 if __name__ == "__main__":
-    print(markdown_to_html_node("""
-    > This is a quote block
-    > that has _italic_ word
-    > and a **bold** word    
-    """
-    ).to_html())
+    print(extract_title("# The title of the document "))
