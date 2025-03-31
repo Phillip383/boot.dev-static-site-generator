@@ -1,12 +1,14 @@
 import textnode as tn
 import os
 import shutil
+from markdowntohtml import generate_page
 
 static_dir = "./static"
 public_dir = "./public"
 
 def main():
     copy_dir(static_dir, public_dir)
+    generate_page('content/index.md', 'template.html', 'public/index.html')
 
 def copy_dir(source, destination):
     source_dir_content = os.listdir(source)
