@@ -15,19 +15,17 @@ def generate_page(from_path, template_path, dest_path):
     html_file = open(template_path)
     
     markdown_doc = md_file.read()
-    template_doc = html_file.read()
+    html_doc = html_file.read()
     
     md_file.close()
     html_file.close()
-    
-    html_content = markdown_to_html_node(markdown_doc).to_html()
-    html_title = extract_title(markdown_doc)
-    template_doc = template_doc.replace("{{ Title }}", html_title)
-    template_doc = template_doc.replace("{{ Content }}", html_content)
+
+    html_doc = html_doc.replace("{{ Title }}", extract_title(markdown_doc))
+    html_doc = html_doc.replace("{{ Content }}", markdown_to_html_node(markdown_doc).to_html())
 
     if os.path.exists(dest_path):
         dest_file = open(dest_path)
-        dest_file.write(template_doc)
+        dest_file.write(html_doc)
         dest_file.close()
     else:
         #create the directories leading up to the destination.
@@ -36,7 +34,7 @@ def generate_page(from_path, template_path, dest_path):
             os.makedirs(dirs)
         
         dest_file = open(dest_path, 'w')
-        dest_file.write(template_doc)
+        dest_file.write(html_doc)
         dest_file.close()
 
 def markdown_to_html_node(markdown) -> ParentNode:
