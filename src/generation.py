@@ -50,4 +50,11 @@ def generate_page(from_path, template_path, dest_path):
         dest_file.write(html_doc)
         dest_file.close()
 
-
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    contents = os.listdir(dir_path_content)
+    for content in contents:
+        current_path = os.path.join(dir_path_content, content)
+        if os.path.isdir(current_path):
+            generate_pages_recursive(current_path, template_path, dest_dir_path)
+        else:
+            generate_page(current_path, template_path, os.path.join(dest_dir_path, current_path.strip("content/")).replace("md", "html"))

@@ -1,9 +1,9 @@
 from generation import *
-from constants import STATIC_DIR, PUBLIC_DIR
+from constants import *
 
 def main():
     copy_dir(STATIC_DIR, PUBLIC_DIR)
-    generate_page('content/index.md', 'template.html', 'public/index.html')
+    generate_pages_recursive(CONTENT_DIR, TEMPLATE_PATH, PUBLIC_DIR)
 
 if __name__ == "__main__":
     main()
