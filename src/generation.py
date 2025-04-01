@@ -38,8 +38,8 @@ def generate_page(from_path, template_path, dest_path, base_path):
     html_doc = html_doc.replace("{{ Content }}", markdown_to_html_node(markdown_doc).to_html())
     
     if base_path != "/":
-        html_doc = html_doc.replace("href=\"/", f"href=\"{base_path}/")
-        html_doc = html_doc.replace("src=\"/", f"src=\"{base_path}/")
+        html_doc = html_doc.replace("href=\"/", f"href=\"{base_path}")
+        html_doc = html_doc.replace("src=\"/", f"src=\"{base_path}")
 
     if os.path.exists(dest_path):
         dest_file = open(dest_path)
