@@ -21,7 +21,8 @@ def copy_dir(source, destination):
             #copy the file to the destination.
             shutil.copy(current_path, destination)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, base_path):
+    dest_path = dest_path.replace(".md", ".html")
     print(f"From {from_path} to {dest_path} using {template_path}")
     
     md_file = open(from_path)
@@ -35,6 +36,10 @@ def generate_page(from_path, template_path, dest_path):
 
     html_doc = html_doc.replace("{{ Title }}", extract_title(markdown_doc))
     html_doc = html_doc.replace("{{ Content }}", markdown_to_html_node(markdown_doc).to_html())
+    
+    if base_path != "/":
+        html_doc = html_doc.replace("href=\"/", f"href=\"{base_path}/")
+        html_doc = html_doc.replace("src=\"/", f"src=\"{base_path}/")
 
     if os.path.exists(dest_path):
         dest_file = open(dest_path)
@@ -50,12 +55,12 @@ def generate_page(from_path, template_path, dest_path):
         dest_file.write(html_doc)
         dest_file.close()
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
     contents = os.listdir(dir_path_content)
     for i in range(len(contents)):
         current_content_path = os.path.join(dir_path_content, contents[i])
         current_dest_path = os.path.join(dest_dir_path, contents[i])
         if os.path.isdir(current_content_path):
-            generate_pages_recursive(current_content_path, template_path, current_dest_path)
+            generate_pages_recursive(current_content_path, template_path, current_dest_path, base_path)
         else:
-            generate_page(current_content_path, template_path, current_dest_path.replace(".md", ".html"))
+            generate_page(current_content_path, template_path, current_dest_path, base_path)
