@@ -5,37 +5,6 @@ from parentnode import *
 from texttotextnodes import *
 from leafnode import *
 from textnode import *
-import os
-
-
-def generate_page(from_path, template_path, dest_path):
-    print(f"From {from_path} to {dest_path} using {template_path}")
-    
-    md_file = open(from_path)
-    html_file = open(template_path)
-    
-    markdown_doc = md_file.read()
-    html_doc = html_file.read()
-    
-    md_file.close()
-    html_file.close()
-
-    html_doc = html_doc.replace("{{ Title }}", extract_title(markdown_doc))
-    html_doc = html_doc.replace("{{ Content }}", markdown_to_html_node(markdown_doc).to_html())
-
-    if os.path.exists(dest_path):
-        dest_file = open(dest_path)
-        dest_file.write(html_doc)
-        dest_file.close()
-    else:
-        #create the directories leading up to the destination.
-        if os.path.exists(dest_path[0:dest_path.rfind("/")]) == False:
-            dirs = dest_path[0:dest_path.rfind("/")]
-            os.makedirs(dirs)
-        
-        dest_file = open(dest_path, 'w')
-        dest_file.write(html_doc)
-        dest_file.close()
 
 def markdown_to_html_node(markdown) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
