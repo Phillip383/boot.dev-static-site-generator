@@ -52,9 +52,10 @@ def generate_page(from_path, template_path, dest_path):
 
 def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
     contents = os.listdir(dir_path_content)
-    for content in contents:
-        current_path = os.path.join(dir_path_content, content)
-        if os.path.isdir(current_path):
-            generate_pages_recursive(current_path, template_path, dest_dir_path)
+    for i in range(len(contents)):
+        current_content_path = os.path.join(dir_path_content, contents[i])
+        current_dest_path = os.path.join(dest_dir_path, contents[i])
+        if os.path.isdir(current_content_path):
+            generate_pages_recursive(current_content_path, template_path, current_dest_path)
         else:
-            generate_page(current_path, template_path, os.path.join(dest_dir_path, current_path.strip("content/")).replace("md", "html"))
+            generate_page(current_content_path, template_path, current_dest_path.replace(".md", ".html"))
